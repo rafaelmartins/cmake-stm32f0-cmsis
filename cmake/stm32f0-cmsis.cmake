@@ -168,7 +168,7 @@ function(stm32f0_target_set_linker_script target script)
     )
 endfunction()
 
-function(stm32f0_target_set_hse_clock target frequency timeout)
+function(stm32f0_target_set_hse_clock target frequency)
     if(TARGET _stm32f0_target_set_hse_clock_${target})
         message(WARNING "stm32f0_target_set_hse_clock(${target}) already called, ignoring.")
         return()
@@ -177,7 +177,6 @@ function(stm32f0_target_set_hse_clock target frequency timeout)
 
     target_compile_definitions(${target} PRIVATE
         HSE_VALUE=${frequency}
-        HSE_STARTUP_TIMEOUT=${timeout}
     )
 endfunction()
 
