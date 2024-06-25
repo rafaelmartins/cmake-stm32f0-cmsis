@@ -96,6 +96,24 @@ function(stm32f0_target_generate_map target)
     )
 endfunction()
 
+function(stm32f0_target_generate_bin target)
+    if(TARGET ${target}-bin)
+        message(WARNING "stm32f0_target_generate_bin(${target}) already called, ignoring.")
+        return()
+    endif()
+
+    add_custom_command(
+        OUTPUT ${target}.bin
+        COMMAND "${ARM_OBJCOPY}" -O binary "$<TARGET_FILE:${target}>" "${target}.bin"
+        DEPENDS $<TARGET_FILE:${target}>
+    )
+
+    add_custom_target(${target}-bin
+        ALL
+        DEPENDS ${target}.bin
+    )
+endfunction()
+
 function(stm32f0_target_generate_ihex target)
     if(TARGET ${target}-ihex)
         message(WARNING "stm32f0_target_generate_ihex(${target}) already called, ignoring.")
