@@ -11,9 +11,9 @@ set(CMAKE_ASM_COMPILER     arm-none-eabi-gcc)
 set(CMAKE_C_COMPILER       arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER     arm-none-eabi-g++)
 
-find_program(ARM_SIZE    arm-none-eabi-size    REQUIRED)
-find_program(ARM_OBJCOPY arm-none-eabi-objcopy REQUIRED)
-find_program(ARM_OBJDUMP arm-none-eabi-objdump REQUIRED)
+find_program(ARM_SIZE    arm-none-eabi-size)
+find_program(ARM_OBJCOPY arm-none-eabi-objcopy)
+find_program(ARM_OBJDUMP arm-none-eabi-objdump)
 
 # as the elf is not transferred directly to the microncontroller, we can always have debug symbols included
 set(CMAKE_ASM_FLAGS_INIT "-ggdb3 -fdata-sections -ffunction-sections")

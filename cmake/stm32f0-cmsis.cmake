@@ -23,7 +23,7 @@ function(stm32f0_target_set_mcu target mcu)
     endif()
 
     if((NOT CMAKE_C_COMPILER_ID STREQUAL "GNU") OR (NOT CMAKE_ASM_COMPILER_ID STREQUAL "GNU"))
-        message(FATAL_ERROR "Unsupported compiler, please use GCC (https://github.com/xpack-dev-tools/arm-none-eabi-gcc-xpack/releases/latest)")
+        message(FATAL_ERROR "Unsupported compiler, please use GCC (https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)")
     endif()
 
     string(SUBSTRING ${mcu} 0 9 mcu_prefix)
@@ -102,6 +102,11 @@ function(stm32f0_target_generate_bin target)
         return()
     endif()
 
+    if(NOT ARM_OBJCOPY)
+        message(WARNING "ARM objcopy not installed. ignoring bin generation.")
+        return()
+    endif()
+
     add_custom_command(
         OUTPUT ${target}.bin
         COMMAND "${ARM_OBJCOPY}" -O binary "$<TARGET_FILE:${target}>" "${target}.bin"
@@ -117,6 +122,11 @@ endfunction()
 function(stm32f0_target_generate_ihex target)
     if(TARGET ${target}-ihex)
         message(WARNING "stm32f0_target_generate_ihex(${target}) already called, ignoring.")
+        return()
+    endif()
+
+    if(NOT ARM_OBJCOPY)
+        message(WARNING "ARM objcopy not installed. ignoring ihex generation.")
         return()
     endif()
 
@@ -166,6 +176,10 @@ function(stm32f0_target_show_size target)
         return()
     endif()
     add_library(_stm32f0_target_show_size_${target} INTERFACE)
+
+    if(NOT ARM_SIZE)
+        return()
+    endif()
 
     add_custom_command(
         TARGET ${target}
